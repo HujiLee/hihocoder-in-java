@@ -19,16 +19,31 @@ public class Main {
         put('i', new LinkedList<Integer>());
         put('o', new LinkedList<Integer>());
     }};
-
+    static String debugger(){
+        String show="";
+        for(Object i:char2indexes.get('h').toArray()){
+            show+=i+",";
+        }
+        show+=" | ";
+        for(Integer i:char2indexes.get('i')){
+            show+=i+",";
+        }
+        show+=" | ";
+        for(Integer i:char2indexes.get('o')){
+            show+=i+",";
+        }
+        return show;
+    }
     static private boolean checkHIO() {
         if (char2indexes.get('i').size() != 1) return false;
         if (char2indexes.get('h').size() != 2) return false;
         if (char2indexes.get('o').size() != 1) return false;
         return true;
     }
-
+    static private char lastChar = ' ';
     static boolean read(char ch, int index) {
         LinkedList<Integer> list;
+        boolean result;
         switch (ch) {
             case 'h':
                 list = char2indexes.get('h');
@@ -37,40 +52,43 @@ public class Main {
                 if (list.size() > 2) {
                     //list.pop();//todo:not correct,should use 'removeFirst' to act as a Queue
                     list.removeFirst();
-                    char2indexes.get('i').clear();
-                    char2indexes.get('o').clear();
-                    return false;
+                    if(lastChar=='h'){
+                        char2indexes.get('i').clear();
+                        char2indexes.get('o').clear();
+                    }
                 }
-                return checkHIO();
-//                    break;
+                result= checkHIO();
+                lastChar='h';
+                return result;
             case 'i':
                 list = char2indexes.get('i');
                 list.add(index);
                 if (list.size() > 1) {
                     list.removeFirst();
-                    char2indexes.get('h').clear();
-                    char2indexes.get('o').clear();
-                    return false;
+                    if(lastChar=='i'){
+                        char2indexes.get('h').clear();
+                        char2indexes.get('o').clear();
+                    }
                 }
-                return checkHIO();
-//                    break;
+                result= checkHIO();
+                lastChar='i';
+                return result;
             case 'o':
                 list = char2indexes.get('o');
                 list.add(index);
                 if (list.size() > 1) {
                     list.removeFirst();
-                    char2indexes.get('h').clear();
-                    char2indexes.get('i').clear();
-                    return false;
+                    if(lastChar=='o'){
+                        char2indexes.get('h').clear();
+                        char2indexes.get('i').clear();
+                    }
                 }
-                return checkHIO();
-//                    break;
+                result=  checkHIO();
+                lastChar='o';
+                return result;
             default:
                 return false;
         }
-
-
-//        return false;
     }
 
     static int calcLength() {
@@ -94,19 +112,26 @@ public class Main {
         DataInputStream stream = new DataInputStream(System.in);
         char temp;
         int index = 0;
+        int minLength = Integer.MAX_VALUE;
         while (true) {
             temp = (char) stream.read();
             if (temp == '\uFFFF' || temp == '\n') {
                 break;
             }
-//            System.out.println(temp);
             index++;
             boolean isHihoStr = read(temp, index);
             if (isHihoStr) {
-                System.out.println(calcLength());
-                return;
+                int length = calcLength();
+                if(minLength>length){
+                    minLength=length;
+                }
             }
         }
-        System.out.println(-1);
+        if(minLength<Integer.MAX_VALUE){
+            System.out.println(minLength);
+        }else {
+            System.out.println(-1);
+        }
+
     }
 }
