@@ -19,28 +19,45 @@ public class Main {
         put('i', new LinkedList<Integer>());
         put('o', new LinkedList<Integer>());
     }};
-    static String debugger(){
-        String show="";
-        for(Object i:char2indexes.get('h').toArray()){
-            show+=i+",";
+
+    /**
+     * 将ch队列中在index位置之前的记录清除,用在某个字符(=对应index)出现超出限定数量时,清除掉其他字符ch对应列表中低于index的记录
+     *
+     * @param ch
+     * @param index
+     */
+    static void clearBefore(char ch, int index) {
+        LinkedList<Integer> list = char2indexes.get(ch);
+        while (list.size() > 0 && list.getFirst() < index) {
+            list.removeFirst();
         }
-        show+=" | ";
-        for(Integer i:char2indexes.get('i')){
-            show+=i+",";
+
+    }
+
+    static String debugger() {
+        String show = "";
+        for (Object i : char2indexes.get('h').toArray()) {
+            show += i + ",";
         }
-        show+=" | ";
-        for(Integer i:char2indexes.get('o')){
-            show+=i+",";
+        show += " | ";
+        for (Integer i : char2indexes.get('i')) {
+            show += i + ",";
+        }
+        show += " | ";
+        for (Integer i : char2indexes.get('o')) {
+            show += i + ",";
         }
         return show;
     }
+
     static private boolean checkHIO() {
         if (char2indexes.get('i').size() != 1) return false;
         if (char2indexes.get('h').size() != 2) return false;
         if (char2indexes.get('o').size() != 1) return false;
         return true;
     }
-    static private char lastChar = ' ';
+
+    //    static private char lastChar = ' ';//todo:it is NO useful
     static boolean read(char ch, int index) {
         LinkedList<Integer> list;
         boolean result;
@@ -51,40 +68,31 @@ public class Main {
                 list.add(index);
                 if (list.size() > 2) {
                     //list.pop();//todo:not correct,should use 'removeFirst' to act as a Queue
-                    list.removeFirst();
-                    if(lastChar=='h'){
-                        char2indexes.get('i').clear();
-                        char2indexes.get('o').clear();
-                    }
+                    int lastIndex = list.removeFirst();
+                    clearBefore('i', lastIndex);
+                    clearBefore('o', lastIndex);
                 }
-                result= checkHIO();
-                lastChar='h';
+                result = checkHIO();
                 return result;
             case 'i':
                 list = char2indexes.get('i');
                 list.add(index);
                 if (list.size() > 1) {
-                    list.removeFirst();
-                    if(lastChar=='i'){
-                        char2indexes.get('h').clear();
-                        char2indexes.get('o').clear();
-                    }
+                    int lastIndex = list.removeFirst();
+                    clearBefore('h', lastIndex);
+                    clearBefore('o', lastIndex);
                 }
-                result= checkHIO();
-                lastChar='i';
+                result = checkHIO();
                 return result;
             case 'o':
                 list = char2indexes.get('o');
                 list.add(index);
                 if (list.size() > 1) {
-                    list.removeFirst();
-                    if(lastChar=='o'){
-                        char2indexes.get('h').clear();
-                        char2indexes.get('i').clear();
-                    }
+                    int lastIndex = list.removeFirst();
+                    clearBefore('h', lastIndex);
+                    clearBefore('i', lastIndex);
                 }
-                result=  checkHIO();
-                lastChar='o';
+                result = checkHIO();
                 return result;
             default:
                 return false;
@@ -122,14 +130,14 @@ public class Main {
             boolean isHihoStr = read(temp, index);
             if (isHihoStr) {
                 int length = calcLength();
-                if(minLength>length){
-                    minLength=length;
+                if (minLength > length) {
+                    minLength = length;
                 }
             }
         }
-        if(minLength<Integer.MAX_VALUE){
+        if (minLength < Integer.MAX_VALUE) {
             System.out.println(minLength);
-        }else {
+        } else {
             System.out.println(-1);
         }
 
