@@ -51,28 +51,6 @@ class StringIarraySeq{
     }
 }
 class Solver {
-    /**
-     * @param s example:"0101001"
-     * @return
-     */
-    static private boolean isOrdered01String(String s) {
-        int maxIndexFor0 = -1, minIndexFor1 = -1;
-        final int strLength = s.length();
-        final char[] chars = s.toCharArray();
-        for (int i = 0; i < strLength; i++) {
-            if (chars[i] == '0') {
-                maxIndexFor0 = i;
-            } else {
-                if (minIndexFor1 == -1) {
-                    minIndexFor1 = i;
-                }
-            }
-        }
-        if (maxIndexFor0 == -1) return true;//全是1
-        if (minIndexFor1 == -1) return true;//全是0
-        if (minIndexFor1 > maxIndexFor0) return true;
-        return false;
-    }
 
     /**
      * @param str example:[0,1,0,1,0,0,1]
@@ -106,17 +84,6 @@ class Solver {
         put("0",0);
 
     }};
-    static final String separator = ",";
-
-
-
-    private static String indexes2str(List<Integer> list) {
-        String s = "";
-        for (Integer i : list) {
-            s += i + separator;
-        }
-        return s;
-    }
 
     private final int[] s01;
     private final String toStringed;//只用来toString()
@@ -168,6 +135,8 @@ class Solver {
                                 Solver.O1string2changedBits.put(toStringed,seq.changedTime);
                                 return Solver.O1string2changedBits.get(toStringed);
                             }
+                        }
+                        for(StringIarraySeq seq:seqs){
                             newGeneration.add(seq.getNextGeneration());
                         }
                     }
