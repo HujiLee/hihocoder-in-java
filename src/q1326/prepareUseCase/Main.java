@@ -106,7 +106,12 @@ class UseCaseGen {
             //首先看看能不能只变处次
             for (LinkedList<Integer> list : length2indexes.get(1)) {
                 if (isOrdered01String(changeAt(s01, indexes2str(list)))) {
-                    System.out.println(s01+"|"+1+"|"+changeAt(s01, indexes2str(list))+"|e:"+s01.endsWith("11")+"|s:"+s01.startsWith("00"));
+                    if(s01.endsWith("1")||s01.startsWith("0")) {
+
+                    }else {
+                        System.out.println(s01+"|"+1+"|"+changeAt(s01, indexes2str(list))+"|e:"+s01.endsWith("1")+"|s:"+s01.startsWith("0"));
+                    }
+
                     return 1;
                 }
             }
@@ -121,8 +126,12 @@ class UseCaseGen {
                         newList.add(maxValue);
                         newListSet.add(newList);
                         if (isOrdered01String(changeAt(s01, indexes2str(newList)))) {
-                            System.out.println(s01+"|"+howManyNeedChange+"|"+changeAt(s01, indexes2str(newList))+"|e:"+s01.endsWith("11")+"|s:"+s01.startsWith("00"));
-                            return howManyNeedChange;
+                            if(s01.startsWith("0")||s01.endsWith("1")){
+
+                            }else {
+                                System.out.println(s01+"|"+howManyNeedChange+"|"+changeAt(s01, indexes2str(newList))+"|e:"+s01.endsWith("11")+"|s:"+s01.startsWith("00"));
+                            }
+                             return howManyNeedChange;
                         }
                     }
                 }
