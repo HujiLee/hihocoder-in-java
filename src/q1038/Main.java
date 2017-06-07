@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 /**
@@ -35,9 +36,9 @@ class O1KnapsackSolver {
         this.shouhins = shouhins;
         this.quantityOfShouken = quantityOfShouken;
 
-        need2MaxValueMaps = new TreeMap[shouhins.length + 1];
+        need2MaxValueMaps = new HashMap[shouhins.length + 1];
         for (int i = 0; i < need2MaxValueMaps.length; i++) {
-            need2MaxValueMaps[i] = new TreeMap<Integer, Integer>();
+            need2MaxValueMaps[i] = new HashMap<Integer, Integer>();
         }
 
       /*  index_weight_maxValue = new int[shouhins.length + 1][quantityOfShouken + 1];
@@ -61,7 +62,7 @@ class O1KnapsackSolver {
         return index_weight_maxValue[index][weight];
     }*/
 
-    private TreeMap<Integer, Integer>[] need2MaxValueMaps;
+    private HashMap<Integer, Integer>[] need2MaxValueMaps;
 
     /**
      * @param index  　表示第index个对象是否放入背包
@@ -121,4 +122,4 @@ public class Main {
 
     }
 }
-//TLE	Java	17546ms	203MB
+//TLE	Java	17374ms	268MB	29秒前
